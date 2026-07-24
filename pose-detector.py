@@ -1,10 +1,4 @@
 ﻿"""
-Dad Pose Detector
-------------------
-Uses MediaPipe Holistic (hands + full body pose) to recognize a few fun
-gestures from a live webcam feed and prints a caption on screen.
-
-Recognized gestures (all heuristic -- tune thresholds below if needed):
   - Finger heart (thumb + index of each hand crossing near each other)
         -> "Dad is in love with the game"
   - Thumbs up / thumbs down (one hand)
@@ -35,14 +29,7 @@ Recognized gestures (all heuristic -- tune thresholds below if needed):
   - Thinking pose (hand near the chin, elbow bent, like "The Thinker")
         -> "Dad is deep in thought"
 
-Controls:
   q  -> quit
-
-Setup:
-  pip install opencv-python mediapipe
-
-Run:
-  python dad_pose_detector.py
 """
 
 import math
@@ -57,25 +44,25 @@ mp_drawing_styles = mp.solutions.drawing_styles
 # ----------------------------------------------------------------------
 # Tunable thresholds
 # ----------------------------------------------------------------------
-HEART_DIST_THRESHOLD = 0.08      # normalized distance between fingertips for finger-heart
-CLAP_DIST_THRESHOLD = 0.08       # normalized distance between wrists for clap
-PRAYER_DIST_THRESHOLD = 0.06     # normalized distance between matching fingertips for praying hands
+HEART_DIST_THRESHOLD = 0.08      # usual distance between fingertips for finger-heart
+CLAP_DIST_THRESHOLD = 0.08       # usual distance between wrists for clap
+PRAYER_DIST_THRESHOLD = 0.06     # usual distance between matching fingertips for praying hands
 MESSAGE_HOLD_SECONDS = 1.5       # how long a caption stays on screen after being triggered
 COOLDOWN_SECONDS = 1.0           # minimum time between re-triggering the SAME message
 
 
 def distance(a, b):
-    """Euclidean distance between two mediapipe landmarks (normalized coords)."""
+    #Euclidean distance between two mediapipe landmarks (normalized coords).
     return math.hypot(a.x - b.x, a.y - b.y)
 
 
 def all_visible(landmarks, min_visibility=0.5):
-    """True if every given landmark has visibility above the threshold (or no visibility attr at all)."""
+    #True if every given landmark has visibility above the threshold (or no visibility attr at all).
     return all(getattr(p, "visibility", 1.0) >= min_visibility for p in landmarks)
 
 
 def angle_at_point(a, b, c):
-    """Angle (degrees) at point b, formed by points a-b-c."""
+    #Angle at point b, formed by points a-b-c.
     ab = (a.x - b.x, a.y - b.y)
     cb = (c.x - b.x, c.y - b.y)
     dot = ab[0] * cb[0] + ab[1] * cb[1]
@@ -111,7 +98,7 @@ def detect_thumbs(hand_landmarks):
 
 
 def detect_finger_heart(left_hand, right_hand):
-    """Finger-heart: thumb of one hand crosses near index of the other, and vice versa."""
+    #Finger-heart: thumb of one hand crosses near index of the other, vice versa.
     if left_hand is None or right_hand is None:
         return False
     l_thumb, l_index = left_hand.landmark[4], left_hand.landmark[8]
@@ -131,7 +118,7 @@ def detect_clap(left_hand, right_hand):
 
 
 def detect_hello_wave(left_hand, right_hand, pose_landmarks, prev_wrist_positions):
-    """Rough hello-wave heuristic: one hand is raised near shoulder height and moves sideways."""
+    #Rough hello-wave heuristic: one hand is raised near shoulder height and moves sideways.
     if pose_landmarks is None:
         return False
 
@@ -163,7 +150,7 @@ def detect_hello_wave(left_hand, right_hand, pose_landmarks, prev_wrist_position
 
 
 def detect_peace_sign(hand_landmarks):
-    """Single hand: index + middle extended, ring + pinky curled."""
+    #Single hand: index + middle extended, ring + pinky curled.
     lm = hand_landmarks.landmark
     index_up = lm[8].y < lm[6].y - 0.03
     middle_up = lm[12].y < lm[10].y - 0.03
@@ -238,7 +225,7 @@ def detect_point_to_sky(pose_landmarks):
 
 
 def detect_superhero_pose(pose_landmarks):
-    """Hands on hips, feet planted wide apart."""
+    #Hands on hips, feet planted wide apart.
     if pose_landmarks is None:
         return False
     lm = pose_landmarks.landmark
@@ -260,7 +247,7 @@ def detect_superhero_pose(pose_landmarks):
 
 
 def detect_tree_pose(pose_landmarks):
-    """One foot lifted and resting near the opposite knee, arms raised overhead."""
+    #One foot lifted and resting near the opposite knee, arms raised overhead.
     if pose_landmarks is None:
         return False
     lm = pose_landmarks.landmark
@@ -287,7 +274,7 @@ def detect_tree_pose(pose_landmarks):
 
 
 def detect_lunge(pose_landmarks):
-    """One knee bent deeply forward, other leg extended back, feet spread in a wide stride."""
+    #One knee bent deeply forward, other leg extended back, feet spread in a wide stride.
     if pose_landmarks is None:
         return False
     lm = pose_landmarks.landmark
@@ -316,10 +303,9 @@ def detect_lunge(pose_landmarks):
 
 def detect_dab(pose_landmarks):
     """
-    Very rough dab heuristic:
       - one elbow bent sharply (wrist near/above shoulder height, close to head)
       - the other arm extended fairly straight, raised up and away from the body
-    Requires full upper body to be visible.
+    Requires full upper body to be visible otherwise you're getting last warned
     """
     if pose_landmarks is None:
         return False
@@ -330,7 +316,7 @@ def detect_dab(pose_landmarks):
     L_WRIST, R_WRIST = lm[15], lm[16]
     NOSE = lm[0]
 
-    # visibility check (helps ensure "whole body / upper body" is actually in frame)
+    # visibility check (helps ensure "whole body / upper body" is actually in frame) otherwise its wraps
     needed = [L_SHOULDER, R_SHOULDER, L_ELBOW, R_ELBOW, L_WRIST, R_WRIST, NOSE]
     if not all_visible(needed):
         return False
@@ -354,7 +340,7 @@ def detect_dab(pose_landmarks):
 
 
 def detect_thinking_pose(pose_landmarks):
-    """One hand resting near the chin with the elbow bent, like Rodin's 'The Thinker'."""
+    #One hand resting near the chin with the elbow bent like the monkey hmm
     if pose_landmarks is None:
         return False
     lm = pose_landmarks.landmark
@@ -384,7 +370,7 @@ def detect_thinking_pose(pose_landmarks):
 def main():
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
-        print("Could not open webcam. Check your camera index/permissions.")
+        print("Could not open webcam. Check your camera index/permissions.") #wraps
         return
 
     current_message = ""
@@ -423,8 +409,7 @@ def main():
             right_hand = results.right_hand_landmarks
             pose = results.pose_landmarks
 
-            # --- Priority order: dab > tree pose > superhero > lunge > thinking pose > point to sky
-            #     > praying hands/namaste > heart > both-hands peace > clap > wave > rock horns > thumbs ---
+            #just scroll lil down and take a lil guess how many if statements you boutta see
             if detect_dab(pose):
                 trigger("Dad is using the dab")
             elif detect_tree_pose(pose):
@@ -466,14 +451,12 @@ def main():
                     trigger("Dad says good job!")
                 elif thumb_result == "down":
                     trigger("Dad says bad job!")
-
-            # Track wrist positions for the hello-wave detector.
             if left_hand is not None:
                 prev_wrist_positions["left"] = (left_hand.landmark[0].x, left_hand.landmark[0].y)
             if right_hand is not None:
                 prev_wrist_positions["right"] = (right_hand.landmark[0].x, right_hand.landmark[0].y)
 
-            # --- Draw landmarks (optional, comment out if you want a clean feed) ---
+            #Draw landmarks
             if pose:
                 mp_drawing.draw_landmarks(
                     frame, pose, mp_holistic.POSE_CONNECTIONS,
@@ -484,7 +467,7 @@ def main():
             if right_hand:
                 mp_drawing.draw_landmarks(frame, right_hand, mp_holistic.HAND_CONNECTIONS)
 
-            # --- Draw caption ---
+            #Draw caption
             if current_message and time.time() < message_expires_at:
                 h, w = frame.shape[:2]
                 text = current_message
