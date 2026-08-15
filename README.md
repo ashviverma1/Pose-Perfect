@@ -1,4 +1,4 @@
-# Birthday-Project
+# Pose-Perfect
 
 This project uses MediaPipe Holistic to detect body and hand gestures from a live webcam feed and display a fun caption on screen. It is meant to be a playful pose detector that recognizes actions such as waving, clapping, praying, pointing, and other expressive gestures.
 
@@ -6,10 +6,10 @@ This project uses MediaPipe Holistic to detect body and hand gestures from a liv
 
 The script in [pose-detector.py](pose-detector.py) captures video from your webcam, processes each frame with MediaPipe Holistic, and analyzes body-pose and hand-landmark data. Based on the detected pose or gesture, it displays a matching message such as:
 
-- "Dad is saying hello!"
-- "Dad is proud"
-- "Dad says good job!"
-- "Dad is using the dab"
+- "You are saying hello!"
+- "You are proud"
+- "You are giving a good job!"
+- "You are doing the dab!"
 
 ## How it works
 
