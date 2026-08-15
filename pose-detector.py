@@ -47,9 +47,7 @@ mp_holistic = mp.solutions.holistic
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 
-# ----------------------------------------------------------------------
-# Tunable thresholds
-# ----------------------------------------------------------------------
+
 HEART_DIST_THRESHOLD = 0.08      # usual distance between fingertips for finger-heart
 CLAP_DIST_THRESHOLD = 0.08       # usual distance between wrists for clap
 PRAYER_DIST_THRESHOLD = 0.06     # usual distance between matching fingertips for praying hands
@@ -372,7 +370,7 @@ def detect_thinking_pose(pose_landmarks):
 
     return left_thinking or right_thinking
 
-
+#where the main outputs happen
 def main():
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
@@ -383,7 +381,7 @@ def main():
     message_expires_at = 0.0
     last_triggered = {}  # message -> timestamp, for cooldown
     prev_wrist_positions = {"left": None, "right": None}
-
+#the trigger function is where the correct message appears on the screen depending on what the computer reads the pose you are doing
     def trigger(message):
         nonlocal current_message, message_expires_at
         now = time.time()
@@ -417,30 +415,30 @@ def main():
 
             #just scroll lil down and take a lil guess how many if statements you boutta see
             if detect_dab(pose):
-                trigger("Dad is using the dab")
+                trigger("You are using the dab")
             elif detect_tree_pose(pose):
-                trigger("Dad found his zen")
+                trigger("You found his zen")
             elif detect_superhero_pose(pose):
-                trigger("Dad is a superhero")
+                trigger("You are a superhero")
             elif detect_lunge(pose):
-                trigger("Dad is lunging into action")
+                trigger("You are lunging into action")
             elif detect_thinking_pose(pose):
-                trigger("Dad is deep in thought")
+                trigger("You are deep in thought")
             elif detect_point_to_sky(pose):
-                trigger("Dad's got the moves")
+                trigger("You got the moves")
             elif detect_praying_hands(left_hand, right_hand):
                 if is_prayer_near_face(pose, left_hand, right_hand):
-                    trigger("Dad is praying for patience")
+                    trigger("You are praying for patience")
                 else:
-                    trigger("Dad says namaste")
+                    trigger("You are saying namaste")
             elif detect_hello_wave(left_hand, right_hand, pose, prev_wrist_positions):
-                trigger("Dad is saying hello!")
+                trigger("You are saying hello!")
             elif detect_finger_heart(left_hand, right_hand):
-                trigger("Dad is in love with the game")
+                trigger("You are in love with the game")
             elif detect_both_hands_peace(left_hand, right_hand):
-                trigger("Dad is keeping the peace")
+                trigger("You are keeping the peace")
             elif detect_clap(left_hand, right_hand):
-                trigger("Dad is proud")
+                trigger("You are proud")
             else:
                 rock_horns = any(
                     detect_rock_horns(hand) for hand in (left_hand, right_hand) if hand is not None
@@ -452,11 +450,11 @@ def main():
                         if thumb_result:
                             break
                 if rock_horns:
-                    trigger("Dad is a rockstar")
+                    trigger("You are a rockstar")
                 elif thumb_result == "up":
-                    trigger("Dad says good job!")
+                    trigger("You are saying good job!")
                 elif thumb_result == "down":
-                    trigger("Dad says bad job!")
+                    trigger("You are saying bad job!")
             if left_hand is not None:
                 prev_wrist_positions["left"] = (left_hand.landmark[0].x, left_hand.landmark[0].y)
             if right_hand is not None:
@@ -487,7 +485,7 @@ def main():
                 cv2.rectangle(frame, (x - 15, y - th - 15), (x + tw + 15, y + 15), (0, 0, 0), -1)
                 cv2.putText(frame, text, (x, y), font, scale, (0, 255, 255), thickness, cv2.LINE_AA)
 
-            cv2.imshow("Dad Pose Detector - press q to quit", frame)
+            cv2.imshow("Pose Detector - press q to quit", frame)
             if cv2.waitKey(5) & 0xFF == ord("q"):
                 break
 
