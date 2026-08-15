@@ -1,33 +1,39 @@
 ﻿"""
+POSE-PERFECT
+
+A project created to allow users to correct the specific poses pre-modeled to ensure they are perfecting them!
+
+The poses already created are:
+
   - Finger heart (thumb + index of each hand crossing near each other)
-        -> "Dad is in love with the game"
+        -> "You are in love with the game"
   - Thumbs up / thumbs down (one hand)
-        -> "Dad says good job!" / "Dad says bad job!"
+        -> "You are saying good job!" / "You are saying bad job!"
   - Clap (both wrists close together)
-        -> "Dad is proud"
+        -> "You are proud"
   - Wave (one hand raised and moving side-to-side)
-        -> "Dad is saying hello!"
+        -> "You are saying hello!"
   - Dab (one arm bent across the face, other arm extended out straight,
     full body visible)
-        -> "Dad is using the dab"
+        -> "You are using the dab"
   - Peace sign, both hands (index + middle up, ring + pinky curled, on each hand)
-        -> "Dad is keeping the peace"
+        -> "You are keeping the peace"
   - Praying hands (palms pressed together, fingers pointing up)
-        -> "Dad is praying for patience"
+        -> "You are praying for patience"
   - Rock horns, either hand (index + pinky up, middle + ring curled)
-        -> "Dad is a rockstar"
+        -> "You are a rockstar"
   - Point to the sky (one arm raised straight overhead)
-        -> "Dad's got the moves"
+        -> "You got the moves"
   - Namaste (palms together at chest height)
-        -> "Dad says namaste"
+        -> "You are saying namaste"
   - Superhero pose (hands on hips, feet planted wide)
-        -> "Dad is a superhero"
+        -> "You are a superhero"
   - Tree pose (one foot resting near the opposite knee, arms overhead, full body visible)
-        -> "Dad found his zen"
+        -> "You found his zen"
   - Lunge (one knee bent deeply forward, other leg extended back)
-        -> "Dad is lunging into action"
+        -> "You are lunging into action"
   - Thinking pose (hand near the chin, elbow bent, like "The Thinker")
-        -> "Dad is deep in thought"
+        -> "You are deep in thought"
 
   q  -> quit
 """
