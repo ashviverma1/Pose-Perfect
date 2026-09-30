@@ -36,25 +36,8 @@ The current version can recognize a variety of simple gestures, including:
 - Dab
 - Thinking pose
 
-## Requirements
-
-Install the required packages:
-
-```bash
-pip install opencv-python mediapipe
-```
-
-## Run the project
-
-From the project folder, run:
-
-```bash
-python pose-detector.py
-```
-
-Press q to quit the webcam window.
+After using the project, the user can type in "q" to end the program.
 
 ## Notes
 
-The gesture detection is heuristic-based, which means it uses simple rules and thresholds rather than a trained machine-learning classifier. This makes it easy to tweak if you want to improve accuracy for your own movements.
-
+The gesture detection is heuristic-featured, which means it uses simple rules and thresholds rather than a trained machine-learning classifier. This makes it easy to tweak if you want to improve accuracy for your own movements.
