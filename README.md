@@ -1,6 +1,6 @@
 # Pose-Perfect
 
-This project uses MediaPipe Holistic to detect body and hand gestures from a live webcam feed and display a fun caption on screen. It is meant to be a playful pose detector that recognizes actions such as waving, clapping, praying, pointing, and other expressive gestures.
+This project uses MediaPipe Holistic to detect body and hand gestures from a live webcam feed and display a fun caption on screen. It is meant to be a playful pose detector that recognizes actions such as waving, clapping, praying, pointing, and other expressive gestures. The inspiration for this development was to enhance the accuracy for students or those interested in activities needing correct poses(such as dance, exercising, or in general just posing), allowing tedious tasks of correcting poses(for example, these tasks can be given to dance teachers or coaches) to be limited! :)
 
 ## What the code does
 
